@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'clicks.dart';
+
 
 void main() {
   runApp(HomePage());
@@ -64,32 +64,6 @@ void clearCalculator(){
 }
 
 
- Widget clicks (String clickValue, Function(String ) onPressed){
-   return GestureDetector(
-     onTap: (){
-       onPressed (clickValue);
-     },
-     child: Container(
-       height: 80,
-       width: 80,
-       decoration: BoxDecoration(
-         color: Colors.grey.shade800,
-         borderRadius: BorderRadius.circular(100),
-       ),
-       child: Center(
-         child: Text(
-           clickValue,
-           style: TextStyle(
-             color: Colors.white,
-             fontSize: 32,
-           ),
-         ),
-       ),
-     ),
-   );
- }
-}
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -107,132 +81,123 @@ void clearCalculator(){
                         color: Colors.black,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 12),
+                              vertical: 2, horizontal:18),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                  printValue(),
+                                  newValue,
                                     style: TextStyle(
                                         fontSize: 52, color: Colors.white),
                                   ),
                                 ],
-                              ),
-                              SizedBox(height: 100),
-                              Text(
-                                answer.toString(),
-                                style:
-                                    TextStyle(fontSize: 52, color: Colors.white),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
+                    SizedBox(height: 12),
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                OperatorButtons(
-                                    operationColor: Colors.black87,
-                                    containerColor: Colors.grey.shade400,
-                                    operation: 'AC'),
-                                OperatorButtons(
-                                    operationColor: Colors.black87,
-                                    containerColor: Colors.grey.shade400,
-                                    operation: '+/-'),
-                                OperatorButtons(
-                                    operationColor: Colors.black87,
-                                    containerColor: Colors.grey.shade400,
-                                    operation: '%'),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.orange,
-                                    operation: '÷'),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                clicks(
-                                  value: 7,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              clicks(
+                                  'AC', (_) => clearCalculator(),Colors.grey.shade400,Colors.black
+                              ),
+                              clicks(
+                                  '+/-', pressedOperator,Colors.grey.shade400,Colors.black
+                              ),
+                              clicks(
+                                  '%', pressedOperator,Colors.grey.shade400,Colors.black
+                              ),
+                              clicks(
+                                  '÷', pressedOperator,Colors.orange,Colors.white
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              clicks(
+                                  '7', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '8', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '9', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  'x', pressedOperator,Colors.orange,Colors.white
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              clicks(
+                                  '4', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '5', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '6', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '-', pressedOperator,Colors.orange,Colors.white
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              clicks(
+                                  '1', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '2', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '3', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '+', pressedOperator,Colors.orange,Colors.white
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 180,
+                                child: clicks(
+                                    '0', pressedNum,Colors.grey.shade800,Colors.white
                                 ),
-                                clicks(value: 8),
-                                clicks(value: 9),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.orange,
-                                    operation: 'x'),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                clicks(value: 4),
-                                clicks(value: 5),
-                                clicks(value: 6),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.orange,
-                                    operation: '-'),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                clicks(value: 3),
-                                clicks(value: 2),
-                                clicks(value: 1),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.orange,
-                                    operation: '+'),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  height: 80,
-                                  width: 175,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade800,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Center(
-                                    child: Text(
-                                      '0',
-                                      style: TextStyle(
-                                        fontSize: 32,
-                                        color: Colors.grey.shade200,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.grey.shade800,
-                                    operation: '.'),
-                                OperatorButtons(
-                                    operationColor: Colors.grey.shade200,
-                                    containerColor: Colors.orange,
-                                    operation: '='),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                               clicks(
+                                  '.', pressedNum,Colors.grey.shade800,Colors.white
+                              ),
+                              clicks(
+                                  '=', (_) => calculateResult(),Colors.orange,Colors.white
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                        ],
                       ),
                     ),
                   ],
@@ -246,48 +211,29 @@ void clearCalculator(){
   }
 }
 
-class OperatorButtons extends StatefulWidget {
-  late Color operationColor;
-  late Color containerColor;
-  late String operation;
-
-  OperatorButtons(
-      {required this.operationColor,
-      required this.containerColor,
-      required this.operation});
-
-  @override
-  State<OperatorButtons> createState() => _OperatorButtonsState();
-}
-
-class _OperatorButtonsState extends State<OperatorButtons> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          switch (widget.operation) {
-            case '+':
-          }
-        });
-      },
-      child: Container(
-        height: 80,
-        width: 80,
-        decoration: BoxDecoration(
-          color: widget.containerColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Center(
-          child: Text(
-            widget.operation,
-            style: TextStyle(
-              color: widget.operationColor,
-              fontSize: 32,
-            ),
+Widget clicks(String clickValue, Function(String) onPressed, Color clickColor, Color valueColor){
+  return GestureDetector(
+    onTap: (){
+      onPressed (clickValue);
+    },
+    child: Container(
+      height: 80,
+      width: 80,
+      decoration: BoxDecoration(
+        color: clickColor,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Center(
+        child: Text(
+          clickValue,
+          style: TextStyle(
+            color: valueColor,
+            fontSize: 32,
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
+
+
