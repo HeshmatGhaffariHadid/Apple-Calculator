@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'clicks.dart';
 
 void main() {
@@ -13,19 +12,83 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  int clickValue = 42;
-  int answer = 0;
+ String newValue = '0';
+ String lastValue = '0';
+ String operator = '';
 
-
-  String printValue (){
-    List<int> res = [];
+  void pressedNum(String number){
     setState(() {
-      for(int i = 0; i< NumberButtons.clickValue.length; i++){
-        res.add(NumberButtons.clickValue[i]);
+      if(newValue == '0'){
+        newValue = number;
+      }else{
+        newValue += number;
       }
     });
-    return res.toString();
   }
+
+void pressedOperator(String ope){
+    setState(() {
+      lastValue = newValue;
+      newValue = '0';
+      operator = ope;
+    });
+}
+
+void calculateResult(){
+      double num1 = double.parse(lastValue);
+      double num2 = double.parse(newValue);
+      double result = 0;
+      if(operator == '+'){
+        result = num1 + num2;
+      }else if(operator == '-'){
+        result = num1 - num2;
+      }else if(operator == 'x'){
+        result = num1 * num2;
+      }else if(operator == '÷'){
+        result = num1 / num2;
+      }
+
+      setState(() {
+        newValue = result.toString();
+        lastValue = '0';
+        operator = '';
+      });
+}
+
+void clearCalculator(){
+    setState(() {
+      newValue = '0';
+      lastValue = '0';
+      operator = '';
+    });
+}
+
+
+ Widget clicks (String clickValue, Function(String ) onPressed){
+   return GestureDetector(
+     onTap: (){
+       onPressed (clickValue);
+     },
+     child: Container(
+       height: 80,
+       width: 80,
+       decoration: BoxDecoration(
+         color: Colors.grey.shade800,
+         borderRadius: BorderRadius.circular(100),
+       ),
+       child: Center(
+         child: Text(
+           clickValue,
+           style: TextStyle(
+             color: Colors.white,
+             fontSize: 32,
+           ),
+         ),
+       ),
+     ),
+   );
+ }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -34,144 +97,148 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
-          child: Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: Colors.black,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        color: Colors.black,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                  printValue(),
+                                    style: TextStyle(
+                                        fontSize: 52, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 100),
                               Text(
-                              printValue(),
-                                style: TextStyle(
-                                    fontSize: 52, color: Colors.white),
+                                answer.toString(),
+                                style:
+                                    TextStyle(fontSize: 52, color: Colors.white),
                               ),
                             ],
                           ),
-                          SizedBox(height: 100),
-                          Text(
-                            answer.toString(),
-                            style:
-                                TextStyle(fontSize: 52, color: Colors.white),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OperatorButtons(
-                                operationColor: Colors.black87,
-                                containerColor: Colors.grey.shade400,
-                                operation: 'AC'),
-                            OperatorButtons(
-                                operationColor: Colors.black87,
-                                containerColor: Colors.grey.shade400,
-                                operation: '+/-'),
-                            OperatorButtons(
-                                operationColor: Colors.black87,
-                                containerColor: Colors.grey.shade400,
-                                operation: '%'),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.orange,
-                                operation: '÷'),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            NumberButtons(
-                              value: 7,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                OperatorButtons(
+                                    operationColor: Colors.black87,
+                                    containerColor: Colors.grey.shade400,
+                                    operation: 'AC'),
+                                OperatorButtons(
+                                    operationColor: Colors.black87,
+                                    containerColor: Colors.grey.shade400,
+                                    operation: '+/-'),
+                                OperatorButtons(
+                                    operationColor: Colors.black87,
+                                    containerColor: Colors.grey.shade400,
+                                    operation: '%'),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.orange,
+                                    operation: '÷'),
+                              ],
                             ),
-                            NumberButtons(value: 8),
-                            NumberButtons(value: 9),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.orange,
-                                operation: 'x'),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            NumberButtons(value: 4),
-                            NumberButtons(value: 5),
-                            NumberButtons(value: 6),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.orange,
-                                operation: '-'),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            NumberButtons(value: 3),
-                            NumberButtons(value: 2),
-                            NumberButtons(value: 1),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.orange,
-                                operation: '+'),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 175,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade800,
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Center(
-                                child: Text(
-                                  '0',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    color: Colors.grey.shade200,
+                            SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                clicks(
+                                  value: 7,
+                                ),
+                                clicks(value: 8),
+                                clicks(value: 9),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.orange,
+                                    operation: 'x'),
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                clicks(value: 4),
+                                clicks(value: 5),
+                                clicks(value: 6),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.orange,
+                                    operation: '-'),
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                clicks(value: 3),
+                                clicks(value: 2),
+                                clicks(value: 1),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.orange,
+                                    operation: '+'),
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  height: 80,
+                                  width: 175,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade800,
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Center(
+                                    child: Text(
+                                      '0',
+                                      style: TextStyle(
+                                        fontSize: 32,
+                                        color: Colors.grey.shade200,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.grey.shade800,
+                                    operation: '.'),
+                                OperatorButtons(
+                                    operationColor: Colors.grey.shade200,
+                                    containerColor: Colors.orange,
+                                    operation: '='),
+                              ],
                             ),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.grey.shade800,
-                                operation: '.'),
-                            OperatorButtons(
-                                operationColor: Colors.grey.shade200,
-                                containerColor: Colors.orange,
-                                operation: '='),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -179,7 +246,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class OperatorButtons extends StatelessWidget {
+class OperatorButtons extends StatefulWidget {
   late Color operationColor;
   late Color containerColor;
   late String operation;
@@ -190,25 +257,32 @@ class OperatorButtons extends StatelessWidget {
       required this.operation});
 
   @override
+  State<OperatorButtons> createState() => _OperatorButtonsState();
+}
+
+class _OperatorButtonsState extends State<OperatorButtons> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        switch (operation) {
-          case '+':
-        }
+        setState(() {
+          switch (widget.operation) {
+            case '+':
+          }
+        });
       },
       child: Container(
         height: 80,
         width: 80,
         decoration: BoxDecoration(
-          color: containerColor,
+          color: widget.containerColor,
           borderRadius: BorderRadius.circular(100),
         ),
         child: Center(
           child: Text(
-            operation,
+            widget.operation,
             style: TextStyle(
-              color: operationColor,
+              color: widget.operationColor,
               fontSize: 32,
             ),
           ),
